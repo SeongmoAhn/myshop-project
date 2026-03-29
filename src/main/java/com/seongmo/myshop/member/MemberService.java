@@ -1,5 +1,7 @@
 package com.seongmo.myshop.member;
 
+import com.seongmo.myshop.exception.BusinessException;
+import com.seongmo.myshop.exception.ErrorCode;
 import com.seongmo.myshop.member.dto.MemberJoinRequest;
 import com.seongmo.myshop.member.dto.MemberJoinResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,7 @@ public class MemberService {
     @Transactional
     public MemberJoinResponse join(MemberJoinRequest request) {
         if (memberRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+            throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
         }
 
         Member member = new Member(
@@ -38,7 +40,7 @@ public class MemberService {
 
     public MemberJoinResponse getMember(Long id) {
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
         return new MemberJoinResponse(
                 member.getId(),

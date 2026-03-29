@@ -1,5 +1,7 @@
 package com.seongmo.myshop.item;
 
+import com.seongmo.myshop.exception.BusinessException;
+import com.seongmo.myshop.exception.ErrorCode;
 import com.seongmo.myshop.item.dto.ItemCreateRequest;
 import com.seongmo.myshop.item.dto.ItemResponse;
 import com.seongmo.myshop.member.Member;
@@ -21,7 +23,7 @@ public class ItemService {
     @Transactional
     public ItemResponse createItem(ItemCreateRequest request) {
         Member seller = memberRepository.findById(request.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
         Item item = new Item(
                 request.getTitle(),
@@ -36,7 +38,7 @@ public class ItemService {
 
     public ItemResponse getItem(Long id) {
         Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.ITEM_NOT_FOUND));
         return new ItemResponse(item);
     }
 
