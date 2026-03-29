@@ -1,4 +1,7 @@
 package com.seongmo.myshop.member;
 
-public class MemberRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MemberRepository extends JpaRepository<Member, Long> {
+    boolean existsByEmail(String email);
 }

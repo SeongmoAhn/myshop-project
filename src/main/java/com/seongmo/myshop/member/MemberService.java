@@ -4,26 +4,43 @@ import com.seongmo.myshop.member.dto.MemberJoinRequest;
 import com.seongmo.myshop.member.dto.MemberJoinResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final Map<Long, MemberJoinResponse> store = new HashMap<>();
-    private final AtomicLong sequence = new AtomicLong(1);
+    private final MemberRepository memberRepository;
 
+    @Transactional
     public MemberJoinResponse join(MemberJoinRequest request) {
-        Long id = sequence.getAndIncrement();
-        MemberJoinResponse member = new MemberJoinResponse(id, request.getEmail(), request.getNickname());
-        store.put(id, member);
-        return member;
+        if (memberRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+        }
+
+        Member member = new Member(
+                request.getEmail(),
+                request.getPassword(),
+                request.getNickname()
+        );
+
+        Member savedMember = memberRepository.save(member);
+
+        return new MemberJoinResponse(
+                savedMember.getId(),
+                savedMember.getEmail(),
+                savedMember.getNickname()
+        );
     }
 
     public MemberJoinResponse getMember(Long id) {
-        return store.get(id);
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+        return new MemberJoinResponse(
+                member.getId(),
+                member.getEmail(),
+                member.getNickname()
+        );
     }
 }
