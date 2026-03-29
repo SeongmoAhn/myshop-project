@@ -5,6 +5,9 @@ import com.seongmo.myshop.member.dto.MemberJoinResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.seongmo.myshop.member.dto.MemberResponse;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,5 +45,13 @@ public class MemberService {
                 member.getEmail(),
                 member.getNickname()
         );
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberResponse> getAllMembers() {
+        return memberRepository.findAllWithItems()
+                .stream()
+                .map(MemberResponse::new)
+                .collect(Collectors.toList());
     }
 }

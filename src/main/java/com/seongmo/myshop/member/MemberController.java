@@ -5,6 +5,9 @@ import com.seongmo.myshop.member.dto.MemberJoinResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.seongmo.myshop.member.dto.MemberResponse;
+import com.seongmo.myshop.member.dto.MemberResponse;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +26,10 @@ public class MemberController {
     public ResponseEntity<MemberJoinResponse> getMember(@PathVariable Long id) {
         MemberJoinResponse response = memberService.getMember(id);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<MemberResponse>> getAllMembers() {
+        return ResponseEntity.ok(memberService.getAllMembers());
     }
 }
