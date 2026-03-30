@@ -10,12 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.seongmo.myshop.member.dto.MemberResponse;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public MemberJoinResponse join(MemberJoinRequest request) {
@@ -25,7 +27,7 @@ public class MemberService {
 
         Member member = new Member(
                 request.getEmail(),
-                request.getPassword(),
+                passwordEncoder.encode(request.getPassword()),
                 request.getNickname()
         );
 

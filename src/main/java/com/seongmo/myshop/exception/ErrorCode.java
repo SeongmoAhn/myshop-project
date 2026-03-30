@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 회원입니다."),
     DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "이미 사용 중인 이메일입니다."),
-    ITEM_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 상품입니다.");
+    ITEM_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 상품입니다."),
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 올바르지 않습니다.");
 
     private final HttpStatus status;
     private final String message;
