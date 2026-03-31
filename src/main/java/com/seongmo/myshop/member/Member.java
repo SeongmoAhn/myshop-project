@@ -34,4 +34,11 @@ public class Member {
         this.password = password;
         this.nickname = nickname;
     }
+
+    public Member(Long id, String email, String password, String nickname) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+    }
 }
