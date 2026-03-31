@@ -2,9 +2,10 @@ package com.seongmo.myshop.item.dto;
 
 import com.seongmo.myshop.item.Item;
 import lombok.Getter;
+import java.io.Serializable;
 
 @Getter
-public class ItemResponse {
+public class ItemResponse implements Serializable {
     private Long id;
     private String title;
     private String description;

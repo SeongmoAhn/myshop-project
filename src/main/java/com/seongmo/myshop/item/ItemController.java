@@ -29,4 +29,9 @@ public class ItemController {
     public ResponseEntity<List<ItemResponse>> getItemsBySeller(@PathVariable Long memberId) {
         return ResponseEntity.ok(itemService.getItemsBySeller(memberId));
     }
+
+    @GetMapping
+    public ResponseEntity<List<ItemResponse>> getAllItems() {
+        return ResponseEntity.ok(itemService.getAllItems());
+    }
 }

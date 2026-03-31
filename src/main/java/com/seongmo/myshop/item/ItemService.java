@@ -7,6 +7,8 @@ import com.seongmo.myshop.item.dto.ItemResponse;
 import com.seongmo.myshop.member.Member;
 import com.seongmo.myshop.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,17 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
+
+    @Cacheable(value = "items", key = "'all'")
+    @Transactional(readOnly = true)
+    public List<ItemResponse> getAllItems() {
+        return itemRepository.findAll()
+                .stream()
+                .map(ItemResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    @CacheEvict(value = "items", allEntries = true)
 
     @Transactional
     public ItemResponse createItem(ItemCreateRequest request) {
